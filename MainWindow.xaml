@@ -1,0 +1,85 @@
+﻿<Window x:Class="TestHelix3D.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helix="http://helixtoolkit.codeplex.com"
+        xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
+        Title="MainWindow" Height="900" Width="1400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Ribbon Grid.Row="0">
+            <Ribbon.ApplicationMenu>
+                <RibbonApplicationMenu Visibility="Collapsed" />
+            </Ribbon.ApplicationMenu>
+            <RibbonTab Header="功能">
+                <RibbonGroup Header="操作">
+                    <RibbonButton Label="新增" Click="Add_Click"/>
+                    <RibbonButton Label="Load" Click="Load_Click"/>
+                </RibbonGroup>
+            </RibbonTab>
+        </Ribbon>
+
+        <xcad:DockingManager AllowMixedOrientation="True" Grid.Row="1">
+            <xcad:DockingManager.Theme>
+                <xcad:AeroTheme/>
+            </xcad:DockingManager.Theme>
+            <xcad:LayoutRoot>
+                <xcad:LayoutPanel>
+                    <xcad:LayoutAnchorablePaneGroup DockWidth="300">
+                        <xcad:LayoutAnchorablePane>
+                            <xcad:LayoutAnchorable Title="結構" CanClose="False">
+                                <xctk:PropertyGrid Name="PG" SelectedObject="{Binding ElementName=DGV, Path=SelectedItem.Node}" AutoGenerateProperties="False">
+                                    <xctk:PropertyGrid.PropertyDefinitions>
+                                        <xctk:PropertyDefinition Name="Height" Category="尺寸"/>
+                                        <xctk:PropertyDefinition Name="TopRadius" Category="尺寸"/>
+                                        <xctk:PropertyDefinition Name="BaseRadius" Category="尺寸"/>
+                                        <xctk:PropertyDefinition Name="Radius" Category="尺寸"/>
+                                    </xctk:PropertyGrid.PropertyDefinitions>
+                                </xctk:PropertyGrid>
+                            </xcad:LayoutAnchorable>
+                        </xcad:LayoutAnchorablePane>
+                    </xcad:LayoutAnchorablePaneGroup>
+                    <xcad:LayoutDocumentPaneGroup>
+                        <xcad:LayoutDocumentPane>
+                            <xcad:LayoutDocument Title="結構" CanClose="False">
+                                <!--<DataGrid x:Name="DGV" CanUserAddRows="False" AutoGenerateColumns="False" CanUserResizeRows="True" SelectionChanged="DGV_SelectionChanged">
+                                    <DataGrid.Resources>
+                                        <DataTemplate x:Key="DateTemplate" >
+                                            <Button Content="Delete" Click="Delete_Click"/>
+                                        </DataTemplate>
+                                    </DataGrid.Resources>
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn CellTemplate="{StaticResource DateTemplate}"/>
+                                        <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>-->
+                                <xcdg:DataGridControl x:Name="DGV">
+                                    <xcdg:DataGridControl.Columns>
+                                        <xcdg:Column FieldName="delete" AllowGroup="False" AllowSort="False" Width="50">
+                                            <xcdg:Column.CellContentTemplate>
+                                                <DataTemplate>
+                                                    <Button Content="Delete" Click="Delete_Click"/>
+                                                </DataTemplate>
+                                            </xcdg:Column.CellContentTemplate>
+                                        </xcdg:Column>
+                                        <xcdg:Column FieldName="Node" Visible="False"/>
+                                        
+                                    </xcdg:DataGridControl.Columns>
+                                </xcdg:DataGridControl>
+                            </xcad:LayoutDocument>
+                        </xcad:LayoutDocumentPane>
+                        <xcad:LayoutDocumentPane>
+                            <xcad:LayoutDocument Title="預覽" CanClose="False">
+                                <helix:HelixViewport3D x:Name="HelixView" Background="Gray" IsHeadLightEnabled="True"/>
+                            </xcad:LayoutDocument>
+                        </xcad:LayoutDocumentPane>
+                    </xcad:LayoutDocumentPaneGroup>
+                </xcad:LayoutPanel>
+            </xcad:LayoutRoot>
+        </xcad:DockingManager>
+    </Grid>
+</Window>
